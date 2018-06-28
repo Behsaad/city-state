@@ -1,7 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'active_support/core_ext/hash'
 require 'city-state/version'
+require 'city-state'
+
+CS.update
 
 Gem::Specification.new do |spec|
   spec.name          = "city-state"

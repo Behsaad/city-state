@@ -1,4 +1,5 @@
 ---
+!ruby/symbol '': ''
 :AD: Andorra
 :AE: United Arab Emirates
 :AF: Afghanistan
@@ -13,7 +14,7 @@
 :AT: Austria
 :AU: Australia
 :AW: Aruba
-:AX: "Åland"
+:AX: Åland
 :AZ: Azerbaijan
 :BA: Bosnia and Herzegovina
 :BB: Barbados
@@ -32,6 +33,7 @@
 :BR: Brazil
 :BS: Bahamas
 :BT: Bhutan
+:BV: Bouvet Island
 :BW: Botswana
 :BY: Belarus
 :BZ: Belize
@@ -50,11 +52,11 @@
 :COUNTRY_ISO_CODE: country_name
 :CR: Costa Rica
 :CU: Cuba
-:CV: Cape Verde
+:CV: Cabo Verde
 :CW: Curaçao
 :CX: Christmas Island
 :CY: Cyprus
-:CZ: Czech Republic
+:CZ: Czechia
 :DE: Germany
 :DJ: Djibouti
 :DK: Denmark
@@ -64,6 +66,7 @@
 :EC: Ecuador
 :EE: Estonia
 :EG: Egypt
+:EH: Western Sahara
 :ER: Eritrea
 :ES: Spain
 :ET: Ethiopia
@@ -93,6 +96,7 @@
 :GW: Guinea-Bissau
 :GY: Guyana
 :HK: Hong Kong
+:HM: Heard Island and McDonald Islands
 :HN: Honduras
 :HR: Croatia
 :HT: Haiti
@@ -116,7 +120,7 @@
 :KH: Cambodia
 :KI: Kiribati
 :KM: Comoros
-:KN: Saint Kitts and Nevis
+:KN: St Kitts and Nevis
 :KP: North Korea
 :KR: Republic of Korea
 :KW: Kuwait
@@ -217,7 +221,7 @@
 :TH: Thailand
 :TJ: Tajikistan
 :TK: Tokelau
-:TL: East Timor
+:TL: Democratic Republic of Timor-Leste
 :TM: Turkmenistan
 :TN: Tunisia
 :TO: Tonga

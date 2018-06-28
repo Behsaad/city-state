@@ -21,7 +21,7 @@ module CS
     # recursively searches for "GeoLite2-City-Locations-en"
     Zip::File.open(f_zipped) do |zip_file|
       zip_file.each do |entry|
-        if entry.name["GeoLite2-City-Locations-en"].present?
+        unless entry.name.include?("GeoLite2-City-Locations-en").nil?
           fn = entry.name.split("/").last
           entry.extract(File.join(FILES_FOLDER, fn)) { true } # { true } is to overwrite
           break
@@ -37,7 +37,12 @@ module CS
       self.install(state_fn.split(".").last.upcase.to_sym) # reinstall country
     end
     @countries, @states, @cities = [{}, {}, {}] # invalidades cache
-    File.delete COUNTRIES_FN # force countries.yml to be generated at next call of CS.countries
+    File.delete COUNTRIES_FN if File.exists? COUNTRIES_FN# force countries.yml to be generated at next call of CS.countries
+    @countries = self.countries
+    puts @countries.to_s
+    @countries.each do |country|
+      install(country)
+    end
     true
   end
 
@@ -65,17 +70,18 @@ module CS
     # read CSV line by line
     cities = {}
     states = {}
+
     File.foreach(MAXMIND_DB_FN) do |line|
       rec = line.split(",")
       next if rec[COUNTRY] != country
-      next if (rec[STATE].blank? && rec[STATE_LONG].blank?) || rec[CITY].blank?
+      next if (rec[STATE].nil? && rec[STATE_LONG].nil?) || rec[CITY].nil?
 
       # some state codes are empty: we'll use "states-replace" in these cases
-      rec[STATE] = states_replace_inv[rec[STATE_LONG]] if rec[STATE].blank?
-      rec[STATE] = rec[STATE_LONG] if rec[STATE].blank? # there's no correspondent in states-replace: we'll use the long name as code
+      rec[STATE] = states_replace_inv[rec[STATE_LONG]] if rec[STATE].nil?
+      rec[STATE] = rec[STATE_LONG] if rec[STATE].nil? # there's no correspondent in states-replace: we'll use the long name as code
 
       # some long names are empty: we'll use "states-replace" to get the code
-      rec[STATE_LONG] = states_replace[rec[STATE]] if rec[STATE_LONG].blank?
+      rec[STATE_LONG] = states_replace[rec[STATE]] if rec[STATE_LONG].nil?
 
       # normalize
       rec[STATE] = rec[STATE].to_sym
@@ -112,10 +118,10 @@ module CS
 
     # we don't have used this method yet: discover by the file extension
     fn = Dir[File.join(FILES_FOLDER, "cities.*")].last
-    @current_country = fn.blank? ? nil : fn.split(".").last
+    @current_country = fn.nil? ? nil : fn.split(".").last
     
     # there's no files: we'll install and use :US
-    if @current_country.blank?
+    if @current_country.nil?
       @current_country = :US
       self.install(@current_country)
 
@@ -136,7 +142,7 @@ module CS
     country = self.current_country
 
     # load the country file
-    if @cities[country].blank?
+    if @cities[country].nil?
       cities_fn = File.join(FILES_FOLDER, "cities.#{country.to_s.downcase}")
       self.install(country) if ! File.exists? cities_fn
       @cities[country] = YAML::load_file(cities_fn).symbolize_keys
@@ -150,7 +156,7 @@ module CS
     country = self.current_country # normalized
 
     # load the country file
-    if @states[country].blank?
+    if @states[country].nil?
       states_fn = File.join(FILES_FOLDER, "states.#{country.to_s.downcase}")
       self.install(country) if ! File.exists? states_fn
       @states[country] = YAML::load_file(states_fn).symbolize_keys
@@ -168,9 +174,9 @@ module CS
       # reads CSV line by line
       File.foreach(MAXMIND_DB_FN) do |line|
         rec = line.split(",")
-        next if rec[COUNTRY].blank? || rec[COUNTRY_LONG].blank? # jump empty records
+        next if rec[COUNTRY].nil? || rec[COUNTRY_LONG].nil? # jump empty records
         country = rec[COUNTRY].to_s.upcase.to_sym # normalize to something like :US, :BR
-        if @countries[country].blank?
+        if @countries[country].nil?
           long = rec[COUNTRY_LONG].gsub(/\"/, "") # sometimes names come with a "\" char
           @countries[country] = long
         end
