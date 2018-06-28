@@ -1,4 +1,5 @@
 require "city-state/version"
+require 'active_support/core_ext/hash'
 
 module CS
   # CS constants
